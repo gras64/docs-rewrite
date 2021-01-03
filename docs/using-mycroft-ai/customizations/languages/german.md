@@ -1,6 +1,6 @@
 ---
 description: >-
-  Dies ist eine Anleitung wie Mycroft in Deutsch eingerichtet werden kann. Diese Seite beinhaltet auch eine Kurzanleitung. Darin wird die Einrichtung einer Sprachausgabe (TTS), eines alternativen Aktivierwortes (Wake Word) und eine alternative Spracherkennung (STT) tematisiert.
+  Dies ist eine Anleitung wie Mycroft in Deutsch eingerichtet werden kann. Diese Seite beinhaltet auch eine Kurzanleitung. Darin wird die Einrichtung einer Sprachausgabe (TTS), eines alternativen Aktivierwortes (Wake Word) und eine alternative Spracherkennung (STT) thematisiert.
 ---
 
 # Mycroft auf deutsch
