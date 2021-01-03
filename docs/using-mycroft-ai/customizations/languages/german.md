@@ -1,6 +1,6 @@
 ---
 description: >-
-  Dies ist eine Anleitung wie Mycroft in Deutsch eingerichtet werden kann. Diese Seite beinhaltet auch eine Kurzanleitung.
+  Dies ist eine Anleitung wie Mycroft in Deutsch eingerichtet werden kann. Diese Seite beinhaltet auch eine Kurzanleitung. Darin wird die Einrichtung einer Sprachausgabe (TTS), eines alternativen Aktivierwortes (Wake Word) und eine alternative Spracherkennung (STT) tematisiert.
 ---
 
 # Mycroft auf deutsch
@@ -12,9 +12,9 @@ description: >-
 
 Zuerst, [verbinden Sie sich mit ihrem Gerät (z.B. SSH)](https://mycroft.ai/documentation/mark-1/#connecting-to-the-mark-1-via-ssh).
 
-Folgend wird an den Beispielen Google/Mbrola der Sprachoutput (TTS) auf deutsch gesetzt. Mycroft bietet weitere TTS-Möglichkeiten über [marytts](http://mary.dfki.de/), [responsive_voice](https://responsivevoice.org/), [polly](https://aws.amazon.com/de/polly/), auf die hier jedoch nicht näher eingegangen wird. Zudem arbeitet die deutsche Community aktuell an einer eigenen TTS Stimme auf [tacotron2](https://github.com/thorstenMueller/deep-learning-german-tts) Basis.
+Folgend wird an den Beispielen Google/Mbrola die Sprachausgabe (TTS) auf deutsch gesetzt. Mycroft bietet weitere TTS-Möglichkeiten über [marytts](http://mary.dfki.de/), [responsive_voice](https://responsivevoice.org/), [polly](https://aws.amazon.com/de/polly/), auf die hier jedoch nicht näher eingegangen wird. Zudem arbeitet die deutsche Community aktuell an einer eigenen TTS Stimme auf [tacotron2](https://github.com/thorstenMueller/deep-learning-german-tts) Basis.
 
-## Text-to-Speech (TTS) über Google
+## Text-to-Speech (TTS) über Google (Sprachausgabe)
 
 
 Ändere oder ersetze die eigene Konfiguration `mycroft-config edit user` mit folgendem Inhalt.
@@ -35,7 +35,7 @@ Folgend wird an den Beispielen Google/Mbrola der Sprachoutput (TTS) auf deutsch 
 ```
 _HINWEIS: Sollte sich die Standardausgabe von Mycroft in deutsch melden hilft eventuell das updaten mit `mycroft-pip install --upgrade gtts` oder `mycroft-pip install --upgrade gtts-token`._
 
-## TTS Alternativ mit espeak mbrola
+## TTS Alternativ mit espeak mbrola (Sprachausgabe)
 
 Für Rasberry kann mbrola hier herunterladen werden mit `wget http://steinerdatenbank.de/software/mbrola3.0.1h_armhf.deb` und `sudo dpkg -i mbrola3.0.1h_armhf.deb`.
 Installiere nun espeak mbrola über `sudo apt install espeak espeak-data mbrola mbrola-de7`.
@@ -60,7 +60,7 @@ Mycroft sollte nach einem Neustart auf deutsch hören und sprechen. Viele Skills
 
 Das **Wake Word** (z.b. Hey Mycroft, Christopher, Hey Ezra, Hey Jarvis) wird hierbei unter [Mycroft Home](https://home.mycroft.ai) eingerichtet.
 
-## Ändern des **Wake Words** in ein deutsches Wort
+## Ändern des **Wake Words** in ein deutsches Wort (Aktivierungswort)
 
 Mycroft verwendet [Precise](https://mycroft.ai/documentation/precise) und [PocketSphinx](https://github.com/cmusphinx/pocketsphinx) als **Wake Word**-Mechanismus. Das Standard **Wake Word** auf englisch ist `Hey Mycroft` und nutzt Precise und - falls Precise es nicht erkennt - Pocketsphinx.
 
@@ -173,7 +173,7 @@ Falls mit `ln` gearbeitet wird, müssen die folgenden Verzeichnisse, Dateien und
 ~/mycroft-core/client/speech/recognizer/model/de/de.lm
 ```
 
-### Ein deutsches **Wake Word** wählen
+### Ein deutsches **Wake Word** aussuchen (Aktivierungswort)
 
 Wähle ein deutsches **Wake Word** oder Wake Phrase auf deutsch und stelle sicher, dass es in der `cmusphinx-voxforge-de.dic`-Datei des Sprachmodells enthalten ist. Die Erfahrung zeigt, dass die beste Wahl ein einzelnes Wort mit drei oder mehr [Phonemen](https://de.wikipedia.org/wiki/Phonem) ist.
 
@@ -185,7 +185,7 @@ Wähle ein deutsches **Wake Word** oder Wake Phrase auf deutsch und stelle siche
 
 Wenn das gewählte **Wake Word** oder Phrase nicht in der `de.dict` Datei ist, dann wählen Sie entweder ein anderes **Wake Word** oder ändern Sie die `de.dict`Datei, um es hinzuzufügen.
 
-### Konfiguriere Mycroft für die Verwendung eines deutsch ausgesprochenen **Wake Words** 
+### Konfiguriere Mycroft für die Verwendung eines deutsch ausgesprochenen **Wake Words** (Aktivierungswort)
 
 Ändere oder ersetze die eigene Konfiguration `mycroft-config edit user` mit folgendem Inhalt.
 
@@ -205,7 +205,7 @@ Wenn das gewählte **Wake Word** oder Phrase nicht in der `de.dict` Datei ist, d
 ...
 ```
 
-## Mozilla Deepspeech STT
+## Mozilla Deepspeech STT (Spracherkennung)
 
 Mycroft unterstützt auch Deepspeech STT. Hierfür muss ein deutsches Modell auf einem Deepspeech Server einrichten. [Aashish Agarwal](https://github.com/AASHISHAG/deepspeech-german) hat dazu entsprechende [Modell Files](https://drive.google.com/drive/folders/1L7ILB-TMmzL8IDYi_GW8YixAoYWjDMn1) unter Deepspeech V9.0 veröffentlicht.
 
@@ -228,7 +228,9 @@ Erstelle eine Konfiguationsdatei `config.json`.
 ```javascript
 {
   "deepspeech": {
-    "model" :"output_graph.pb", ### unter Raspberry output_graph.tflite
+    "model" :"output_graph.pb",
+    //"model" :"output_graph.tflite", ### uncomment for Raspberry
+    //use absolute path for startupscript
     "scorer" :"kenlm.scorer",
     "beam_width": 1024,
     "lm_alpha": 0.931289039105002,
@@ -246,6 +248,7 @@ Erstelle eine Konfiguationsdatei `config.json`.
       { "logger": "deepspeech_server", "level": "DEBUG"}
     ]
   }
+}
 ```
 ### Start
 
@@ -257,11 +260,13 @@ Antwort sollte nun `test ein zwei drei test(.venv) pi@picroft:~/release_v0.9.0$`
 
 ### Start Deepspeech Server wärend dem booten
 
-Füge folgendes in Startup Datei `/etc/rc.local`.
+Füge folgendes in Startup Datei `/etc/rc.local`. 
 
 ```
 /home/pi/mycroft-core/.venv/bin/deepspeech-server --config /home/pi/release_v0.9.0/config.json
 ```
+
+_Hinweis in der `config.json` sollten absolute Pfade angegeben werden._
 
 ### Konfiguriere Mycroft für die Verwendung von Deepspeech 
 
